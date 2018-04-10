@@ -9,7 +9,7 @@ class Scope(object):
     PROFILE = 'profile'
 
 
-class GoogleAccount(ProviderAccount):
+class GoogleAuthAccount(ProviderAccount):
     def get_profile_url(self):
         return self.account.extra_data.get('link')
 
@@ -17,14 +17,14 @@ class GoogleAccount(ProviderAccount):
         return self.account.extra_data.get('picture')
 
     def to_str(self):
-        dflt = super(GoogleAccount, self).to_str()
+        dflt = super(GoogleAuthAccount, self).to_str()
         return self.account.extra_data.get('name', dflt)
 
 
 class GoogleProvider(OAuth2Provider):
     id = 'google'
     name = 'Google'
-    account_class = GoogleAccount
+    account_class = GoogleAuthAccount
 
     def get_default_scope(self):
         scope = [Scope.PROFILE]

@@ -195,9 +195,9 @@ class ProviderAccount(object):
         Due to the way python_2_unicode_compatible works, this does not work:
 
             @python_2_unicode_compatible
-            class GoogleAccount(ProviderAccount):
+            class GoogleAuthAccount(ProviderAccount):
                 def __str__(self):
-                    dflt = super(GoogleAccount, self).__str__()
+                    dflt = super(GoogleAuthAccount, self).__str__()
                     return self.account.extra_data.get('name', dflt)
 
         It will result in and infinite recursion loop. That's why we

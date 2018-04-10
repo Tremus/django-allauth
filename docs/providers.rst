@@ -666,7 +666,7 @@ some project details for the consent form that will be presented to the client.
 Under "APIs & auth" go to "Credentials" and create a new Client ID. Probably
 you will want a "Web application" Client ID. Provide your domain name or test
 domain name in "Authorized JavaScript origins". Finally fill in
-``http://127.0.0.1:8000/accounts/google/login/callback/`` in the
+``http://127.0.0.1:8000/accounts/google_auth/login/callback/`` in the
 "Authorized redirect URI" field. You can fill multiple URLs, one for each test
 domain. After creating the Client ID you will find all details for the Django
 configuration on this page.

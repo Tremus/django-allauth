@@ -143,7 +143,7 @@ INSTALLED_APPS = (
     'allauth.socialaccount.providers.azure',
     'allauth.socialaccount.providers.facebook',
     'allauth.socialaccount.providers.evernote',
-    'allauth.socialaccount.providers.google',
+    'allauth.socialaccount.providers.google_auth',
     'allauth.socialaccount.providers.github',
     'allauth.socialaccount.providers.linkedin',
     'allauth.socialaccount.providers.openid',

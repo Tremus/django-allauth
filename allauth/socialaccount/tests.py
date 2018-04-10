@@ -463,7 +463,7 @@ class SocialAccountTests(TestCase):
         sociallogin = SocialLogin(
             user=User(email="verified@example.com"),
             account=SocialAccount(
-                provider='google'
+                provider='google_auth'
             ),
             email_addresses=[
                 EmailAddress(
@@ -517,7 +517,7 @@ class SocialAccountTests(TestCase):
         sociallogin = SocialLogin(
             user=User(email="unverified@example.com"),
             account=SocialAccount(
-                provider='google'
+                provider='google_auth'
             ),
             email_addresses=[
                 EmailAddress(
@@ -565,7 +565,7 @@ class SocialAccountTests(TestCase):
         sociallogin = SocialLogin(
             user=User(email="me@example.com"),
             account=SocialAccount(
-                provider='google'
+                provider='google_auth'
             ),
             email_addresses=[
                 EmailAddress(

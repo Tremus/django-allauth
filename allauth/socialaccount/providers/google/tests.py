@@ -51,7 +51,7 @@ class GoogleTests(OAuth2TestsMixin, TestCase):
                (repr(verified_email).lower())))
 
     def test_google_compelete_login_401(self):
-        from allauth.socialaccount.providers.google.views import \
+        from allauth.socialaccount.providers.google_auth.views import \
             GoogleOAuth2Adapter
 
         class LessMockedResponse(MockedResponse):
@@ -78,7 +78,7 @@ class GoogleTests(OAuth2TestsMixin, TestCase):
               "message": "Invalid Credentials" }
             }""")
         with patch(
-                'allauth.socialaccount.providers.google.views'
+                'allauth.socialaccount.providers.google_auth.views'
                 '.requests') as patched_requests:
             patched_requests.get.return_value = response_with_401
             with self.assertRaises(HTTPError):
