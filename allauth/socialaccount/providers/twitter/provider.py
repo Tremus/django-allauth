@@ -2,7 +2,7 @@ from allauth.socialaccount.providers.base import AuthAction, ProviderAccount
 from allauth.socialaccount.providers.oauth.provider import OAuthProvider
 
 
-class TwitterAccount(ProviderAccount):
+class TwitterAuthAccount(ProviderAccount):
     def get_screen_name(self):
         return self.account.extra_data.get('screen_name')
 
@@ -24,13 +24,13 @@ class TwitterAccount(ProviderAccount):
 
     def to_str(self):
         screen_name = self.get_screen_name()
-        return screen_name or super(TwitterAccount, self).to_str()
+        return screen_name or super(TwitterAuthAccount, self).to_str()
 
 
 class TwitterProvider(OAuthProvider):
     id = 'twitter'
     name = 'Twitter'
-    account_class = TwitterAccount
+    account_class = TwitterAuthAccount
 
     def get_auth_url(self, request, action):
         if action == AuthAction.REAUTHENTICATE:
