@@ -155,7 +155,7 @@ INSTALLED_APPS = (
     'allauth.socialaccount.providers.stackexchange',
     'allauth.socialaccount.providers.telegram',
     'allauth.socialaccount.providers.twitch',
-    'allauth.socialaccount.providers.twitter',
+    'allauth.socialaccount.providers.twitter_auth',
     'allauth.socialaccount.providers.vimeo',
     'allauth.socialaccount.providers.weibo',
     'allauth.socialaccount.providers.xing',

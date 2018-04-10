@@ -376,7 +376,7 @@ class SocialAccountTests(TestCase):
         SOCIALACCOUNT_AUTO_SIGNUP=True)
     def test_populate_username_in_blacklist(self):
         factory = RequestFactory()
-        request = factory.get('/accounts/twitter/login/callback/')
+        request = factory.get('/accounts/twitter_auth/login/callback/')
         request.user = AnonymousUser()
         SessionMiddleware().process_request(request)
         MessageMiddleware().process_request(request)
@@ -387,7 +387,7 @@ class SocialAccountTests(TestCase):
         setattr(user, account_settings.USER_MODEL_EMAIL_FIELD,
                 'username@example.com')
 
-        account = SocialAccount(provider='twitter', uid='123')
+        account = SocialAccount(provider='twitter_auth', uid='123')
         sociallogin = SocialLogin(user=user, account=account)
         complete_social_login(request, sociallogin)
 
@@ -404,7 +404,7 @@ class SocialAccountTests(TestCase):
 
         # A social user being signed up...
         account = SocialAccount(
-            provider='twitter',
+            provider='twitter_auth',
             uid='123')
         user = User()
         user_username(user, username)
@@ -413,7 +413,7 @@ class SocialAccountTests(TestCase):
 
         # Signing up, should pop up the social signup form
         factory = RequestFactory()
-        request = factory.get('/accounts/twitter/login/callback/')
+        request = factory.get('/accounts/twitter_auth/login/callback/')
         request.user = AnonymousUser()
         SessionMiddleware().process_request(request)
         MessageMiddleware().process_request(request)
@@ -431,7 +431,7 @@ class SocialAccountTests(TestCase):
 
         account = SocialAccount.objects.create(
             uid='123',
-            provider='twitter',
+            provider='twitter_auth',
             user=user)
 
         self.client.login(

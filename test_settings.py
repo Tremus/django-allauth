@@ -119,7 +119,7 @@ INSTALLED_APPS = (
     'allauth.socialaccount.providers.tumblr',
     'allauth.socialaccount.providers.twentythreeandme',
     'allauth.socialaccount.providers.twitch',
-    'allauth.socialaccount.providers.twitter',
+    'allauth.socialaccount.providers.twitter_auth',
     'allauth.socialaccount.providers.untappd',
     'allauth.socialaccount.providers.vimeo',
     'allauth.socialaccount.providers.vk',

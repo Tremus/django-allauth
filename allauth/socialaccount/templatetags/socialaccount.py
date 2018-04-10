@@ -70,8 +70,8 @@ def get_social_accounts(user):
     {% get_social_accounts user as accounts %}
 
     Then:
-        {{accounts.twitter}} -- a list of connected Twitter accounts
-        {{accounts.twitter.0}} -- the first Twitter account
+        {{accounts.twitter_auth}} -- a list of connected Twitter accounts
+        {{accounts.twitter_auth.0}} -- the first Twitter account
         {% if accounts %} -- if there is at least one social account
     """
     accounts = {}
