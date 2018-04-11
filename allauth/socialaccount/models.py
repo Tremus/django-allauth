@@ -45,6 +45,12 @@ class SocialApp(models.Model):
                                 choices=providers.registry.as_choices())
     name = models.CharField(verbose_name=_('name'),
                             max_length=40)
+    type = models.CharField(verbose_name=_('Type'),
+                           max_length=191,
+                           blank=True,
+                           help_text=_('Type, level or purpose of key'))
+    client_email = models.EmailField(null=True,
+                                     blank=True)
     client_id = models.CharField(verbose_name=_('client id'),
                                  max_length=191,
                                  help_text=_('App ID, or consumer key'))
@@ -56,6 +62,12 @@ class SocialApp(models.Model):
                            max_length=191,
                            blank=True,
                            help_text=_('Key'))
+    pem = models.TextField(verbose_name=_('PEM'),
+                           blank=True,
+                           help_text=_('Super long private key, usually'
+                           ' begins with: -----BEGIN PRIVATE KEY-----.'
+                           ' This is an unsecure way to store very'
+                           ' important keys'))
     # Most apps can be used across multiple domains, therefore we use
     # a ManyToManyField. Note that Facebook requires an app per domain
     # (unless the domains share a common base name).
