@@ -25,10 +25,9 @@ from django.template import TemplateDoesNotExist
 from django.template.loader import render_to_string
 from django.urls import reverse
 from django.utils import timezone
-from django.utils.encoding import force_text
-from django.utils.translation import ugettext_lazy as _
 
-from . import app_settings
+from allauth.compat import force_str, ugettext_lazy as _
+
 from ..utils import (
     build_absolute_uri,
     email_address_exists,
@@ -36,6 +35,7 @@ from ..utils import (
     get_user_model,
     import_attribute,
 )
+from . import app_settings
 
 
 class DefaultAccountAdapter(object):
@@ -85,7 +85,7 @@ class DefaultAccountAdapter(object):
         if prefix is None:
             site = get_current_site(self.request)
             prefix = "[{name}] ".format(name=site.name)
-        return prefix + force_text(subject)
+        return prefix + force_str(subject)
 
     def get_from_email(self):
         """
@@ -268,7 +268,13 @@ class DefaultAccountAdapter(object):
                     username_field).error_messages.get('unique')
                 if not error_message:
                     error_message = self.error_messages['username_taken']
-                raise forms.ValidationError(error_message)
+                raise forms.ValidationError(
+                    error_message,
+                    params={
+                        'model_name': user_model.__name__,
+                        'field_label': username_field,
+                    }
+                )
         return username
 
     def clean_email(self, email):
@@ -333,8 +339,8 @@ class DefaultAccountAdapter(object):
             if hasattr(response, 'render'):
                 response.render()
             resp['html'] = response.content.decode('utf8')
-            if data is not None:
-                resp['data'] = data
+        if data is not None:
+            resp['data'] = data
         return HttpResponse(json.dumps(resp),
                             status=status,
                             content_type='application/json')
@@ -347,15 +353,15 @@ class DefaultAccountAdapter(object):
         }
         for field in form:
             field_spec = {
-                'label': force_text(field.label),
+                'label': force_str(field.label),
                 'value': field.value(),
-                'help_text': force_text(field.help_text),
+                'help_text': force_str(field.help_text),
                 'errors': [
-                    force_text(e) for e in field.errors
+                    force_str(e) for e in field.errors
                 ],
                 'widget': {
                     'attrs': {
-                        k: force_text(v)
+                        k: force_str(v)
                         for k, v in field.field.widget.attrs.items()
                     }
                 }
@@ -407,7 +413,7 @@ class DefaultAccountAdapter(object):
 
     def is_safe_url(self, url):
         from django.utils.http import is_safe_url
-        return is_safe_url(url)
+        return is_safe_url(url, allowed_hosts=None)
 
     def get_email_confirmation_url(self, request, emailconfirmation):
         """Constructs the email confirmation (activation) url.

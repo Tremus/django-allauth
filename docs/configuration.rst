@@ -69,7 +69,10 @@ ACCOUNT_DEFAULT_HTTP_PROTOCOL (="http")
 
 ACCOUNT_EMAIL_CONFIRMATION_COOLDOWN (=180)
   The cooldown period (in seconds) after a confirmation email is sent,
-  during which further emails are not sent.
+  during which further emails are not sent. Note that this cooldown is
+  ignored if you are using HMAC confirmation and you need to disable
+  HMAC by setting **ACCOUNT_EMAIL_CONFIRMATION_HMAC=False** in order
+  for a cooldown to be employed.
 
 ACCOUNT_EMAIL_MAX_LENGTH(=254)
   Maximum length of the email field. You won't need to alter this unless using
@@ -130,7 +133,7 @@ ACCOUNT_LOGOUT_ON_GET (=False)
 ACCOUNT_LOGOUT_ON_PASSWORD_CHANGE (=False)
   Determines whether or not the user is automatically logged out after
   changing or setting their password. See documentation for
-  `Django's session invalidation on password change <https://docs.djangoproject.com/en/1.8/topics/auth/default/#session-invalidation-on-password-change>`_.
+  `Django's session invalidation on password change <https://docs.djangoproject.com/en/stable/topics/auth/default/#session-invalidation-on-password-change>`_.
 
 ACCOUNT_LOGIN_ON_PASSWORD_RESET (=False)
   By changing this setting to ``True``, users will automatically be logged in

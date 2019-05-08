@@ -44,6 +44,30 @@ Development callback URL
     http://localhost:8000/accounts/500px/login/callback/
 
 
+AgaveAPI
+--------
+
+Account Signup
+    https://public.agaveapi.co/create_account
+
+App registration
+    Run ``client-create`` from the cli: https://bitbucket.org/agaveapi/cli/overview
+
+Development callback URL
+    http://localhost:8000/accounts/agave/login/callback/
+    *May require https url, even for localhost*
+
+.. code-block:: python
+
+    SOCIALACCOUNT_PROVIDERS = {
+        'agave': {
+            'API_URL': 'https://api.tacc.utexas.edu',
+        }
+    }
+
+In the absense of a specified API_URL, the default Agave tenant is
+    https://public.agaveapi.co/
+
 Amazon
 ------
 
@@ -138,10 +162,10 @@ Battle.net
 ----------
 
 The Battle.net OAuth2 authentication documentation
-    https://dev.battle.net/docs/read/oauth
+    https://develop.battle.net/documentation/guides/using-oauth
 
-Register your app here (Mashery account required)
-    https://dev.battle.net/apps/register
+Register your app here (Blizzard account required)
+    https://develop.battle.net/access/clients/create
 
 Development callback URL
     https://localhost:8000/accounts/battlenet/login/callback/
@@ -152,6 +176,27 @@ which will accept the ``#`` character using the ``ACCOUNT_USERNAME_VALIDATORS``
 setting. Such a validator is available in
 ``socialaccount.providers.battlenet.validators.BattletagUsernameValidator``.
 
+The following Battle.net settings are available:
+
+.. code-block:: python
+
+    SOCIALACCOUNT_PROVIDERS = {
+        'facebook': {
+            'SCOPE': ['wow.profile', 'sc2.profile'],
+            'REGION': 'us',
+        }
+    }
+
+SCOPE:
+    Scope can be an array of the following options: ``wow.profile`` allows
+    access to the user's World of Warcraft characters. ``sc2.profile`` allows
+    access to the user's StarCraft 2 profile. The default setting is ``[]``.
+
+REGION:
+    Either ``apac``, ``cn``, ``eu``, ``kr``, ``sea``, ``tw`` or ``us``
+
+    Sets the default region to use, can be overriden using query parameters
+    in the URL, for example: ``?region=eu``. Defaults to ``us``.
 
 Bitbucket
 ---------
@@ -178,9 +223,17 @@ Development callback URL
     http://localhost:8000/accounts/box/login/callback/
 
 
+CERN
+----
+App registration (get your key and secret here)
+    https://sso-management.web.cern.ch/OAuth/RegisterOAuthClient.aspx
+
+CERN OAuth2 Documentation
+    https://espace.cern.ch/authentication/CERN%20Authentication/OAuth.aspx
+
+
 Dataporten
 ----------
-
 App registration (get your key and secret here)
     https://docs.dataporten.no/docs/gettingstarted/
 
@@ -268,30 +321,6 @@ App registration (get your key and secret here)
 
 Development callback URL
     http://localhost:8000/accounts/dropbox/login/callback/
-
-Dwolla
-------------
-
-App registration (get your key and secret here)
-    https://dashboard-uat.dwolla.com/applications
-
-Development callback URL
-    http://127.0.0.1:8000/accounts/dwolla/login/callback/
-
-
-.. code-block:: python
-
-    SOCIALACCOUNT_PROVIDERS = {
-        'dwolla': {
-            'SCOPE': [
-                'Send',
-                'Transactions',
-                'Funding',
-                'AccountInfoFull',
-            ],
-            'ENVIROMENT':'sandbox',
-        }
-    }
 
 Dwolla
 ------------
@@ -644,13 +673,40 @@ Example:
     }
 
 
+Globus
+------
+
+Registering an application:
+    https://developers.globus.org/
+
+By default, you will have access to the openid, profile, and offline_access
+scopes.  With the offline_access scope, the API will provide you with a
+refresh token.  For additional scopes, see the Globus API docs:
+
+ https://docs.globus.org/api/auth/reference/
+
+.. code-block:: python
+
+    SOCIALACCOUNT_PROVIDERS = {
+        'globus': {
+            'SCOPE': [
+                'openid',
+                'profile',
+                'email',
+                'urn:globus:auth:scope:transfer.api.globus.org:all'
+            ]
+        }
+    }
+
+
+
 Google
 ------
 
 The Google provider is OAuth2 based.
 
 More info:
-    http://code.google.com/apis/accounts/docs/OAuth2.html#Registering
+    https://developers.google.com/identity/protocols/OAuth2
 
 
 App registration
@@ -722,6 +778,25 @@ Development callback URL
     http://localhost:8000/accounts/instagram/login/callback/
 
 
+JupyterHub
+----------
+
+Documentation on configuring a key and secret key
+    https://jupyterhub.readthedocs.io/en/stable/api/services.auth.html
+
+Development callback URL
+    http://localhost:800/accounts/jupyterhub/login/callback/
+
+Specify the URL of your JupyterHub server as follows:
+
+.. code-block:: python
+
+    SOCIALACCOUNT_PROVIDERS = {
+        'jupyterhub': {
+            'API_URL': 'https://jupyterhub.example.com',
+        }
+    }
+
 Kakao
 -----
 
@@ -756,7 +831,8 @@ You can specify the scope and fields to fetch as follows:
     SOCIALACCOUNT_PROVIDERS = {
         'linkedin': {
             'SCOPE': [
-                'r_emailaddress',
+                'r_basicprofile',
+                'r_emailaddress'
             ],
             'PROFILE_FIELDS': [
                 'id',
@@ -783,6 +859,19 @@ using the same app. Attempting to do so resulted in a weird error message when
 fetching the access token::
 
     missing required parameters, includes an invalid parameter value, parameter more then once. : Unable to retrieve access token : authorization code not found
+
+If you are using tokens originating from the mobile SDK, you will need to specify
+additional headers:
+
+.. code-block:: python
+
+    SOCIALACCOUNT_PROVIDERS = {
+        'linkedin': {
+            'HEADERS': {
+                'x-li-src': 'msdk'
+            }
+        }
+    }
 
 App registration (get your key and secret here)
     https://www.linkedin.com/secure/developer?newapp=
@@ -893,6 +982,24 @@ Development callback URL
     http://localhost:8000/accounts/naver/login/callback/
 
 
+NextCloud
+---------
+
+The following NextCloud settings are available:
+
+.. code-block:: python
+
+    SOCIALACCOUNT_PROVIDERS = {
+        'nextcloud': {
+            'SERVER': 'https://nextcloud.example.org',
+        }
+    }
+
+
+App registration (get your key and secret here)
+
+    https://nextcloud.example.org/settings/admin/security
+
 Odnoklassniki
 -------------
 
@@ -977,7 +1084,7 @@ to define the API you are using in your site's settings, as follows:
 Patreon
 -------
 
-App registration (get your key and secret here)
+App registration (get your key and secret for **v1** of the API here)
     https://www.patreon.com/platform/documentation/clients
 
 Development callback URL
@@ -1075,7 +1182,7 @@ SCOPE:
     https://developers.pinterest.com/docs/api/overview/#scopes
 
 QuickBooks
-------
+----------
 
 App registration (get your key and secret here)
     https://developers.intuit.com/v2/ui#/app/startcreate
@@ -1152,6 +1259,38 @@ To Use:
 - Create a Social application in Django admin, with client id,
   client key, and login_url (in "key" field)
 
+ShareFile
+---------
+
+The following ShareFile settings are available.
+  https://api.sharefile.com/rest/
+
+SUBDOMAIN:
+ Subdomain of your organization with ShareFile.  This is required.
+
+ Example:
+      ``test`` for ``https://test.sharefile.com``
+
+APICP:
+ Defaults to ``secure``.  Refer to the ShareFile documentation if you
+ need to change this value.
+
+DEFAULT_URL:
+ Defaults to ``https://secure.sharefile.com``  Refer to the ShareFile
+ documentation if you need to change this value.
+
+
+Example:
+
+.. code-block:: python
+
+    SOCIALACCOUNT_PROVIDERS = {
+    'sharefile': {
+        'SUBDOMAIN': 'TEST',
+        'APICP': 'sharefile.com',
+        'DEFAULT_URL': 'https://secure.sharefile.com',
+                 }
+    }
 
 Shopify
 -------
@@ -1247,27 +1386,71 @@ Server Fault). This can be controlled by means of the ``SITE`` setting:
     }
 
 
+Steam
+-----
+
+Steam is an OpenID-compliant provider. However, the `steam` provider allows
+access to more of the user's details such as username, full name, avatar, etc.
+
+You need to register an API key here:
+    https://steamcommunity.com/dev/apikey
+
+Make sure to create a Steam SocialApp with that secret key.
+
+
 Stripe
 ------
 
 You register your OAUth2 app via the Connect->Settings page of the Stripe
 dashboard:
-	https://dashboard.stripe.com/account/applications/settings
+
+ https://dashboard.stripe.com/account/applications/settings
 
 This page will provide you with both a Development and Production `client_id`.
 
 You can also register your OAuth2 app callback on the Settings page in the
 "Website URL" box, e.g.:
-    http://example.com/accounts/stripe/login/callback/
+
+ http://example.com/accounts/stripe/login/callback/
 
 However, the OAuth2 secret key is not on this page. The secret key is the same
 secret key that you use with the Stripe API generally. This can be found on the
 Stripe dashboard API page:
-	https://dashboard.stripe.com/account/apikeys
+
+ https://dashboard.stripe.com/account/apikeys
 
 See more in documentation
-    https://stripe.com/docs/connect/standalone-accounts
+ https://stripe.com/docs/connect/standalone-accounts
 
+
+Trello
+------
+
+Register the application at
+
+ https://trello.com/app-key
+
+You get one application key per account.
+
+Save the "Key" to "Client id", the "Secret" to "Secret Key" and "Key" to the "Key"
+field.
+
+Verify which scope you need at
+
+ https://developers.trello.com/page/authorization
+
+Need to change the default scope? Add or update the `trello` setting to
+`settings.py`
+
+.. code-block:: python
+
+  SOCIALACCOUNT_PROVIDERS = {
+      'trello': {
+          'AUTH_PARAMS': {
+              'scope': 'read,write',
+          },
+      },
+  }
 
 Twitch
 ------
@@ -1375,8 +1558,16 @@ App registration (get your key and secret here)
     https://developer.vimeo.com/apps
 
 Development callback URL
-    http://localhost:8000
+    http://localhost:8000/a
 
+Vimeo (OAuth 2)
+---------------
+
+App registration (get your key and secret here)
+    https://developer.vimeo.com/apps
+
+Development callback URL
+    http://localhost:8000/accounts/vimeo_oauth2/login/callback/
 
 VK
 --
