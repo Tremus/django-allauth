@@ -46,9 +46,9 @@ class SocialApp(models.Model):
     name = models.CharField(verbose_name=_('name'),
                             max_length=40)
     type = models.CharField(verbose_name=_('Type'),
-                           max_length=191,
-                           blank=True,
-                           help_text=_('Type, level or purpose of key'))
+                            max_length=191,
+                            blank=True,
+                            help_text=_('Type, level or purpose of key'))
     client_email = models.EmailField(null=True,
                                      blank=True)
     client_id = models.CharField(verbose_name=_('client id'),
@@ -57,7 +57,7 @@ class SocialApp(models.Model):
     secret = models.CharField(verbose_name=_('secret key'),
                               max_length=191,
                               help_text=_('API secret, client secret, or'
-                              ' consumer secret'))
+                                          ' consumer secret'))
     key = models.CharField(verbose_name=_('key'),
                            max_length=191,
                            blank=True,
@@ -65,9 +65,9 @@ class SocialApp(models.Model):
     pem = models.TextField(verbose_name=_('PEM'),
                            blank=True,
                            help_text=_('Super long private key, usually'
-                           ' begins with: -----BEGIN PRIVATE KEY-----.'
-                           ' This is an unsecure way to store very'
-                           ' important keys'))
+                                       ' begins with: -----BEGIN PRIVATE KEY-----.'
+                                       ' This is an unsecure way to store very'
+                                       ' important keys'))
     # Most apps can be used across multiple domains, therefore we use
     # a ManyToManyField. Note that Facebook requires an app per domain
     # (unless the domains share a common base name).
@@ -141,6 +141,7 @@ class SocialAccount(models.Model):
 class SocialToken(models.Model):
     app = models.ForeignKey(SocialApp, on_delete=models.CASCADE)
     account = models.ForeignKey(SocialAccount, on_delete=models.CASCADE)
+    active = models.BooleanField(default=True)
     token = models.TextField(
         verbose_name=_('token'),
         help_text=_(
