@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+from __future__ import print_function
 import io
 import os
 import sys
@@ -61,9 +62,9 @@ def find_package_data(where=".", package="", exclude=standard_exclude,
                             or fn.lower() == pattern.lower()):
                         bad_name = True
                         if show_ignored:
-                            print >> sys.stderr, (
+                            print(
                                 "Directory %s ignored by pattern %s"
-                                % (fn, pattern))
+                                % (fn, pattern), file=sys.stderr)
                         break
                 if bad_name:
                     continue
@@ -85,9 +86,9 @@ def find_package_data(where=".", package="", exclude=standard_exclude,
                             or fn.lower() == pattern.lower()):
                         bad_name = True
                         if show_ignored:
-                            print >> sys.stderr, (
+                            print(
                                 "File %s ignored by pattern %s"
-                                % (fn, pattern))
+                                % (fn, pattern), file=sys.stderr)
                         break
                 if bad_name:
                     continue
@@ -148,6 +149,8 @@ METADATA = dict(
         'Framework :: Django',
         'Framework :: Django :: 1.11',
         'Framework :: Django :: 2.0',
+        'Framework :: Django :: 2.1',
+        'Framework :: Django :: 2.2',
     ],
     packages=find_packages(exclude=['example']),
     package_data=package_data,
