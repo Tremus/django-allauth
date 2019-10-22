@@ -415,6 +415,41 @@ Register your OAuth2 application at ``https://dev.evernote.com/doc/articles/auth
     }
 
 
+Exist
+-----
+
+Register your OAuth2 app in apps page:
+
+    https://exist.io/account/apps/
+
+During development set the callback url to:
+
+    http://localhost:8000/accounts/exist/login/callback/
+
+In production replace localhost with whatever domain you're hosting your app on.
+
+If your app is writing to certain attributes you need to specify this during the
+creation of the app.
+
+The following Exist settings are available:
+
+.. code-block:: python
+
+    SOCIALACCOUNT_PROVIDERS = {
+        'exist': {
+            'SCOPE': ['read+write'],
+        }
+    }
+
+SCOPE:
+    The default scope is ``read``. If you'd like to change this set the scope to
+    ``read+write``.
+
+For more information:
+OAuth documentation: http://developer.exist.io/#oauth2-authentication
+API documentation: http://developer.exist.io/
+
+
 Facebook
 --------
 
@@ -449,6 +484,7 @@ The following Facebook settings are available:
     SOCIALACCOUNT_PROVIDERS = {
         'facebook': {
             'METHOD': 'oauth2',
+            'SDK_URL': '//connect.facebook.net/{locale}/sdk.js',
             'SCOPE': ['email', 'public_profile', 'user_friends'],
             'AUTH_PARAMS': {'auth_type': 'reauthenticate'},
             'INIT_PARAMS': {'cookie': True},
@@ -474,6 +510,14 @@ The following Facebook settings are available:
 
 METHOD:
     Either ``js_sdk`` or ``oauth2``. The default is ``oauth2``.
+
+SDK_URL:
+    If needed, use ``SDK_URL`` to override the default Facebook JavaScript SDK
+    URL, ``//connect.facebook.net/{locale}/sdk.js``. This may be necessary, for
+    example, when using the `Customer Chat Plugin <https://developers.facebook.com/docs/messenger-platform/discovery/customer-chat-plugin/sdk#install>`_.
+    If the ``SDK_URL`` contains a ``{locale}`` format string named argument,
+    the locale given by the ``LOCALE_FUNC`` will be used to generate the
+    ``SDK_URL``.
 
 SCOPE:
     By default, the ``email`` scope is required depending on whether or not
@@ -652,14 +696,15 @@ authentication provider as described in GitLab docs at
 http://doc.gitlab.com/ce/integration/oauth_provider.html
 
 The following GitLab settings are available, if unset https://gitlab.com will
-be used.
+be used, with a ``read_user`` scope.
 
 GITLAB_URL:
     Override endpoint to request an authorization and access token. For your
     private GitLab server you use: ``https://your.gitlab.server.tld``
 
 SCOPE:
-    The ``read_user`` scope is required for the login procedure.
+    The ``read_user`` scope is required for the login procedure, and is the default.
+    If more access is required, the scope should be set here.
 
 Example:
 
@@ -668,7 +713,7 @@ Example:
     SOCIALACCOUNT_PROVIDERS = {
         'gitlab': {
             'GITLAB_URL': 'https://your.gitlab.server.tld',
-            'SCOPE': ['read_user'],
+            'SCOPE': ['api'],
         },
     }
 
@@ -1062,6 +1107,19 @@ following template tag:
     <a href="{% provider_login_url "openid" openid="https://www.google.com/accounts/o8/id" next="/success/url/" %}">Google</a>
 
 
+OpenStreetMap
+-----
+
+Register your client application under `My Settings`/`oauth settings`:
+
+    https://www.openstreetmap.org/user/{Display Name}/oauth_clients
+
+In this page you will get your key and secret
+
+For more information:
+OpenStreetMap OAuth documentation: https://wiki.openstreetmap.org/wiki/OAuth
+
+
 ORCID
 -----
 
@@ -1084,8 +1142,28 @@ to define the API you are using in your site's settings, as follows:
 Patreon
 -------
 
-App registration (get your key and secret for **v1** of the API here)
+The following Patreon settings are available:
+
+.. code-block:: python
+
+    SOCIALACCOUNT_PROVIDERS = {
+        'paypal': {
+            'VERSION': 'v1',
+            'SCOPE': ['pledges-to-me', 'users', 'my-campaign'],
+        }
+    }
+
+VERSION:
+    API version. Either ``v1`` or ``v2``. Defaults to ``v1``.
+
+SCOPE:
+    Defaults to the scope above if using API v1. If using v2, the scope defaults to ``['identity', 'identity[email]', 'campaigns', 'campaigns.members']``.
+
+API documentation:
     https://www.patreon.com/platform/documentation/clients
+
+App registration (get your key and secret for the API here):
+    https://www.patreon.com/portal/registration/register-clients
 
 Development callback URL
     http://127.0.0.1:8000/accounts/patreon/login/callback/
@@ -1192,14 +1270,21 @@ Development callback URL
 
 You can specify sandbox mode by adding the following to the SOCIALACCOUNT_PROVIDERS in your settings.
 
+You can also add space-delimited scope to utilize the QuickBooks Payments and Payroll API
+
 .. code-block:: python
 
     SOCIALACCOUNT_PROVIDERS = {
         'quickbooks': {
             'SANDBOX': TRUE,
+            'SCOPE': [
+              'openid',
+              'com.intuit.quickbooks.accounting com.intuit.quickbooks.payment',
+              'profile',
+              'phone',
+            ]
         }
     }
-
 
 Reddit
 ------
@@ -1398,6 +1483,24 @@ You need to register an API key here:
 Make sure to create a Steam SocialApp with that secret key.
 
 
+Strava
+-----
+
+Register your OAuth2 app in api settings page:
+
+    https://strava.com/settings/api
+
+In this page you will get your key and secret
+
+Development callback URL (only the domain is required on strava.com/settings/api)
+
+    http://example.com/accounts/strava/login/callback/
+
+For more information:
+Strava auth documentation: https://developers.strava.com/docs/authentication/
+API documentation: https://developers.strava.com/docs/reference/
+
+
 Stripe
 ------
 
@@ -1452,12 +1555,43 @@ Need to change the default scope? Add or update the `trello` setting to
       },
   }
 
+Trello
+------
+
+Register the application at
+
+ https://trello.com/app-key
+
+You get one application key per account.
+
+Save the "Key" to "Client id", the "Secret" to "Secret Key" and "Key" to the "Key"
+field.
+
+Verify which scope you need at
+
+ https://developers.trello.com/page/authorization
+
+Need to change the default scope? Add or update the `trello` setting to
+`settings.py`
+
+.. code-block:: python
+
+  SOCIALACCOUNT_PROVIDERS = {
+      'trello': {
+          'AUTH_PARAMS': {
+              'scope': 'read,write',
+          },
+      },
+  }
+
 Twitch
 ------
 
 App registration (get your key and secret here)
-    http://www.twitch.tv/kraken/oauth2/clients/new
+    http://dev.twitch.tv/console
 
+Development callback URL
+    http://localhost:8000/accounts/twitch/login/callback/
 
 Twitter
 -------
@@ -1648,3 +1782,24 @@ Yahoo
 
 Register your OAuth2 app below and enter the resultant client id and secret into admin
     https://developer.yahoo.com/apps/create/
+
+YNAB
+------
+
+App Registration
+    https://app.youneedabudget.com/settings/developer
+
+Development callback URL
+    http://127.0.0.1:8000/accounts/ynab/login/callback/
+
+
+
+Default SCOPE permissions are 'read-only'. If this is the desired functionality, do not add SCOPE entry with ynab app
+in SOCIALACCOUNT_PROVIDERS. Otherwise, adding SCOPE and an empty string will give you read / write.
+
+.. code-block:: python
+    SOCIALACCOUNT_PROVIDERS = {
+        'ynab': {
+            'SCOPE': ''
+        }
+    }

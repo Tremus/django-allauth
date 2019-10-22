@@ -80,6 +80,7 @@ INSTALLED_APPS = (
     'allauth.socialaccount.providers.eveonline',
     'allauth.socialaccount.providers.evernote',
     'allauth.socialaccount.providers.eventbrite',
+    'allauth.socialaccount.providers.exist',
     'allauth.socialaccount.providers.facebook',
     'allauth.socialaccount.providers.feedly',
     'allauth.socialaccount.providers.fivehundredpx',
@@ -105,6 +106,7 @@ INSTALLED_APPS = (
     'allauth.socialaccount.providers.nextcloud',
     'allauth.socialaccount.providers.odnoklassniki',
     'allauth.socialaccount.providers.openid',
+    'allauth.socialaccount.providers.openstreetmap',
     'allauth.socialaccount.providers.orcid',
     'allauth.socialaccount.providers.patreon',
     'allauth.socialaccount.providers.paypal',
@@ -121,6 +123,10 @@ INSTALLED_APPS = (
     'allauth.socialaccount.providers.spotify',
     'allauth.socialaccount.providers.stackexchange',
     'allauth.socialaccount.providers.steam',
+    << << << < HEAD
+    == == == =
+    'allauth.socialaccount.providers.strava',
+    >>>>>> > 42db11c223223b17f6beb6e8220c3705fa731057
     'allauth.socialaccount.providers.stripe',
     'allauth.socialaccount.providers.telegram',
     'allauth.socialaccount.providers.trello',
@@ -137,6 +143,7 @@ INSTALLED_APPS = (
     'allauth.socialaccount.providers.windowslive',
     'allauth.socialaccount.providers.xing',
     'allauth.socialaccount.providers.yahoo',
+    'allauth.socialaccount.providers.ynab',
 )
 
 AUTHENTICATION_BACKENDS = (

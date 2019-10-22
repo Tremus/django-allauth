@@ -87,6 +87,8 @@ Supported Providers
 
 - Evernote (OAuth)
 
+- Exist (OAuth2)
+
 - Facebook (both OAuth2 and JS SDK)
 
 - Feedly (OAuth2)
@@ -131,6 +133,8 @@ Supported Providers
 
 - OpenId
 
+- OpenStreetMap (OAuth)
+
 - ORCID (OAuth2)
 
 - Patreon (OAuth2)
@@ -161,6 +165,8 @@ Supported Providers
 
 - Steam (OpenID)
 
+- Strava (OAuth2)
+
 - Stripe (OAuth2)
 
 - Telegram
@@ -188,6 +194,8 @@ Supported Providers
 - Xing (OAuth)
 
 - Yahoo (OAuth2)
+
+- YNAB (OAuth2)
 
 
 Note: OAuth/OAuth2 support is built using a common code base, making it easy to add support for additional OAuth/OAuth2 providers. More will follow soon...

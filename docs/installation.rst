@@ -73,6 +73,7 @@ settings.py (Important - Please note 'django.contrib.sites' is required as INSTA
         'allauth.socialaccount.providers.edmodo',
         'allauth.socialaccount.providers.eveonline',
         'allauth.socialaccount.providers.evernote',
+        'allauth.socialaccount.providers.exist',
         'allauth.socialaccount.providers.facebook',
         'allauth.socialaccount.providers.feedly',
         'allauth.socialaccount.providers.fivehundredpx',
@@ -97,6 +98,7 @@ settings.py (Important - Please note 'django.contrib.sites' is required as INSTA
         'allauth.socialaccount.providers.nextcloud',
         'allauth.socialaccount.providers.odnoklassniki',
         'allauth.socialaccount.providers.openid',
+        'allauth.socialaccount.providers.openstreetmap',
         'allauth.socialaccount.providers.orcid',
         'allauth.socialaccount.providers.paypal',
         'allauth.socialaccount.providers.patreon',
@@ -111,6 +113,7 @@ settings.py (Important - Please note 'django.contrib.sites' is required as INSTA
         'allauth.socialaccount.providers.spotify',
         'allauth.socialaccount.providers.stackexchange',
         'allauth.socialaccount.providers.steam',
+        'allauth.socialaccount.providers.strava',
         'allauth.socialaccount.providers.stripe',
         'allauth.socialaccount.providers.trello',
         'allauth.socialaccount.providers.tumblr',
@@ -125,6 +128,7 @@ settings.py (Important - Please note 'django.contrib.sites' is required as INSTA
         'allauth.socialaccount.providers.weixin',
         'allauth.socialaccount.providers.windowslive',
         'allauth.socialaccount.providers.xing',
+        'allauth.socialaccount.providers.ynab',
         ...
     )
 
