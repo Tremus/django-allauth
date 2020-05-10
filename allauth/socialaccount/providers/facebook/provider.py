@@ -72,20 +72,17 @@ class FacebookProvider(OAuth2Provider):
             js = "allauth.facebook.login(%s, %s, %s, %s)" % (
                 next, action, process, scope)
             ret = "javascript:%s" % (urlquote(js),)
-        else:
-            assert method == 'oauth2'
+        elif method == 'oauth2':
             ret = super(FacebookProvider, self).get_login_url(request,
                                                               **kwargs)
+        else:
+            raise RuntimeError('Invalid method specified: %s' % method)
         return ret
 
     def _get_locale_callable(self):
         settings = self.get_settings()
-        f = settings.get('LOCALE_FUNC')
-        if f:
-            f = import_callable(f)
-        else:
-            f = get_default_locale_callable()
-        return f
+        func = settings.get('LOCALE_FUNC')
+        return import_callable(func) if func else get_default_locale_callable()
 
     def get_locale_for_request(self, request):
         if not self._locale_callable_cache:

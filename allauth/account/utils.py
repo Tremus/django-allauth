@@ -1,3 +1,4 @@
+import unicodedata
 from collections import OrderedDict
 from datetime import timedelta
 
@@ -8,10 +9,9 @@ from django.core.exceptions import FieldDoesNotExist, ValidationError
 from django.db import models
 from django.db.models import Q
 from django.http import HttpResponseRedirect
-from django.utils.http import urlencode
+from django.utils.encoding import force_str
+from django.utils.http import base36_to_int, int_to_base36, urlencode
 from django.utils.timezone import now
-
-from allauth.compat import base36_to_int, force_str, int_to_base36, six
 
 from ..exceptions import ImmediateHttpResponse
 from ..utils import (
@@ -23,6 +23,17 @@ from ..utils import (
 from . import app_settings, signals
 from .adapter import get_adapter
 from .app_settings import EmailVerificationMethod
+
+
+def _unicode_ci_compare(s1, s2):
+    """
+    Perform case-insensitive comparison of two identifiers, using the
+    recommended algorithm from Unicode Technical Report 36, section
+    2.11.2(B)(2).
+    """
+    norm_s1 = unicodedata.normalize('NFKC', s1).casefold()
+    norm_s2 = unicodedata.normalize('NFKC', s2).casefold()
+    return norm_s1 == norm_s2
 
 
 def get_next_redirect_url(request, redirect_field_name="next"):
@@ -370,7 +381,7 @@ def filter_users_by_username(*username):
     return ret
 
 
-def filter_users_by_email(email):
+def filter_users_by_email(email, is_active=None):
     """Return list of users by email address
 
     Typically one, at most just a few in length.  First we look through
@@ -380,10 +391,21 @@ def filter_users_by_email(email):
     from .models import EmailAddress
     User = get_user_model()
     mails = EmailAddress.objects.filter(email__iexact=email)
-    users = [e.user for e in mails.prefetch_related('user')]
+    if is_active is not None:
+        mails = mails.filter(user__is_active=is_active)
+    users = []
+    for e in mails.prefetch_related('user'):
+        if _unicode_ci_compare(e.email, email):
+            users.append(e.user)
     if app_settings.USER_MODEL_EMAIL_FIELD:
         q_dict = {app_settings.USER_MODEL_EMAIL_FIELD + '__iexact': email}
-        users += list(User.objects.filter(**q_dict))
+        user_qs = User.objects.filter(**q_dict)
+        if is_active is not None:
+            user_qs = user_qs.filter(is_active=is_active)
+        for user in user_qs.iterator():
+            user_email = getattr(user, app_settings.USER_MODEL_EMAIL_FIELD)
+            if _unicode_ci_compare(user_email, email):
+                users.append(user)
     return list(set(users))
 
 
@@ -401,12 +423,12 @@ def user_pk_to_url_str(user):
     """
     User = get_user_model()
     if issubclass(type(User._meta.pk), models.UUIDField):
-        if isinstance(user.pk, six.string_types):
+        if isinstance(user.pk, str):
             return user.pk
         return user.pk.hex
 
     ret = user.pk
-    if isinstance(ret, six.integer_types):
+    if isinstance(ret, int):
         ret = int_to_base36(user.pk)
     return str(ret)
 
