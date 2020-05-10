@@ -4,9 +4,9 @@ Overview
 Requirements
 ------------
 
-- Python 2.7, 3.3, 3.4, 3.5 or 3.6
+- Python 3.5, 3.6, 3.7 or 3.8
 
-- Django (1.11+)
+- Django (2.0+)
 
 - python-openid or python3-openid (depending on your Python version)
 
@@ -40,6 +40,8 @@ Supported Providers
 - AgaveAPI (OAuth2)
 
 - Amazon (OAuth2)
+
+- Amazon Cognito (OAuth2)
 
 - AngelList (OAuth2)
 
@@ -81,6 +83,8 @@ Supported Providers
 
 - Edmodo (OAuth2)
 
+- Edx (open.edx.org) (OAuth2)
+
 - Eve Online (OAuth2)
 
 - Eventbrite (OAuth2)
@@ -112,6 +116,8 @@ Supported Providers
 - JupyterHub (OAuth2)
 
 - Kakao (OAuth2)
+
+- Keycloak (OAuth2)
 
 - Line (OAuth2)
 
@@ -194,6 +200,8 @@ Supported Providers
 - Xing (OAuth)
 
 - Yahoo (OAuth2)
+
+- Yandex (OAuth2)
 
 - YNAB (OAuth2)
 

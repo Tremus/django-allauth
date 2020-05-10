@@ -71,6 +71,7 @@ settings.py (Important - Please note 'django.contrib.sites' is required as INSTA
         'allauth.socialaccount.providers.dropbox',
         'allauth.socialaccount.providers.dwolla',
         'allauth.socialaccount.providers.edmodo',
+        'allauth.socialaccount.providers.edx',
         'allauth.socialaccount.providers.eveonline',
         'allauth.socialaccount.providers.evernote',
         'allauth.socialaccount.providers.exist',
@@ -87,6 +88,7 @@ settings.py (Important - Please note 'django.contrib.sites' is required as INSTA
         'allauth.socialaccount.providers.instagram',
         'allauth.socialaccount.providers.jupyterhub',
         'allauth.socialaccount.providers.kakao',
+        'allauth.socialaccount.providers.keycloak',
         'allauth.socialaccount.providers.line',
         'allauth.socialaccount.providers.linkedin',
         'allauth.socialaccount.providers.linkedin_oauth2',
@@ -128,11 +130,26 @@ settings.py (Important - Please note 'django.contrib.sites' is required as INSTA
         'allauth.socialaccount.providers.weixin',
         'allauth.socialaccount.providers.windowslive',
         'allauth.socialaccount.providers.xing',
+        'allauth.socialaccount.providers.yandex',
         'allauth.socialaccount.providers.ynab',
         ...
     )
 
     SITE_ID = 1
+
+    # Provider specific settings
+    SOCIALACCOUNT_PROVIDERS = {
+        'google': {
+            # For each OAuth based provider, either add a ``SocialApp``
+            # (``socialaccount`` app) containing the required client
+            # credentials, or list them here:
+            'APP': {
+                'client_id': '123',
+                'secret': '456',
+                'key': ''
+            }
+        }
+    }
 
 urls.py::
 
@@ -158,6 +175,7 @@ In your Django root execute the command below to create your database tables::
 Now start your server, visit your admin pages (e.g. http://localhost:8000/admin/)
 and follow these steps:
 
-1. Add a ``Site`` for your domain, matching ``settings.SITE_ID`` (``django.contrib.sites`` app).
-2. For each OAuth based provider, add a ``Social App`` (``socialaccount`` app).
-3. Fill in the site and the OAuth app credentials obtained from the provider.
+- Add a ``Site`` for your domain, matching ``settings.SITE_ID`` (``django.contrib.sites`` app).
+- For each OAuth based provider, either add a ``SocialApp`` (``socialaccount``
+  app) containing the required client credentials, or, make make sure that these are
+  configured via the ``SOCIALACCOUNT_PROVIDERS[<provider>]['APP']`` setting.

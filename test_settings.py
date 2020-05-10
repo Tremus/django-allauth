@@ -52,6 +52,7 @@ INSTALLED_APPS = (
     'allauth.socialaccount',
     'allauth.socialaccount.providers.agave',
     'allauth.socialaccount.providers.amazon',
+    'allauth.socialaccount.providers.amazon_cognito',
     'allauth.socialaccount.providers.angellist',
     'allauth.socialaccount.providers.asana',
     'allauth.socialaccount.providers.auth0',
@@ -77,6 +78,7 @@ INSTALLED_APPS = (
     'allauth.socialaccount.providers.dropbox',
     'allauth.socialaccount.providers.dwolla',
     'allauth.socialaccount.providers.edmodo',
+    'allauth.socialaccount.providers.edx',
     'allauth.socialaccount.providers.eveonline',
     'allauth.socialaccount.providers.evernote',
     'allauth.socialaccount.providers.eventbrite',
@@ -95,6 +97,7 @@ INSTALLED_APPS = (
     'allauth.socialaccount.providers.instagram',
     'allauth.socialaccount.providers.jupyterhub',
     'allauth.socialaccount.providers.kakao',
+    'allauth.socialaccount.providers.keycloak',
     'allauth.socialaccount.providers.line',
     'allauth.socialaccount.providers.linkedin',
     'allauth.socialaccount.providers.linkedin_oauth2',
@@ -143,6 +146,7 @@ INSTALLED_APPS = (
     'allauth.socialaccount.providers.windowslive',
     'allauth.socialaccount.providers.xing',
     'allauth.socialaccount.providers.yahoo',
+    'allauth.socialaccount.providers.yandex',
     'allauth.socialaccount.providers.ynab',
 )
 

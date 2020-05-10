@@ -81,6 +81,37 @@ Development callback URL
     https://example.com/accounts/amazon/login/callback/
 
 
+Amazon Cognito
+--------------
+
+App registration (get your key and secret here)
+  1. Go to your https://console.aws.amazon.com/cognito/ and create a Cognito User Pool if you haven't already.
+  2. Go to General Settings > App Clients section and create a new App Client if you haven't already. Please make sure you select the option to generate a secret key.
+  3. Go to App Integration > App Client Settings section and:
+
+    1. Enable Cognito User Pool as an identity provider.
+    2. Set the callback and sign-out URLs. (see next section for development callback URL)
+    3. Enable Authorization Code Grant OAuth flow.
+    4. Select the OAuth scopes you'd like to allow.
+
+  4. Go to App Integration > Domain Name section and create a domain prefix for your Cognito User Pool.
+
+Development callback URL:
+  http://localhost:8000/accounts/amazon-cognito/login/callback/
+
+In addition, you'll need to specify your user pool's domain like so:
+
+.. code-block:: python
+
+    SOCIALACCOUNT_PROVIDERS = {
+        'amazon_cognito': {
+            'DOMAIN': 'https://<domain-prefix>.auth.us-east-1.amazoncognito.com',
+        }
+    }
+
+Your domain prefix is the value you specified in step 4 of the app registration process.
+If you provided a custom domain such as accounts.example.com provide that instead.
+
 AngelList
 ---------
 
@@ -371,6 +402,23 @@ value is set, the Edmodo provider will use ``basic`` by default:
         }
     }
 
+
+Edx
+------
+
+Open Edx OAuth2 documentation
+    https://course-catalog-api-guide.readthedocs.io/en/latest/authentication/
+
+It is necessary to set ``EDX_URL`` to your open edx installation. If no ``EDX_URL``
+value is set, the Edx provider will use ``https://edx.org`` which does not work:
+
+.. code-block:: python
+
+    SOCIALACCOUNT_PROVIDERS = {
+      'edx': {
+          'EDX_URL': "https://openedx.local",
+      }
+    }
 
 Eve Online
 ----------
@@ -851,6 +899,34 @@ App registration (get your key here)
 Development callback URL
     http://localhost:8000/accounts/kakao/login/callback/
 
+Keycloak
+--------
+
+Creating and Registering the Client
+    https://www.keycloak.org/docs/latest/getting_started/index.html#creating-and-registering-the-client
+
+Development callback URL
+    http://localhost:8000/accounts/keycloak/login/callback/
+
+The following Keycloak settings are available.
+
+KEYCLOAK_URL:
+    The url of your hosted keycloak server, it must end with ``/auth``. For
+    example, you can use: ``https://your.keycloak.server/auth``
+
+KEYCLOAK_REAML:
+    The name of the ``realm`` you want to use.
+
+Example:
+
+.. code-block:: python
+
+  SOCIALACCOUNT_PROVIDERS = {
+      'keycloak': {
+          'KEYCLOAK_URL': 'https://keycloak.custom/auth',
+          'KEYCLOAK_REALM': 'master'
+      }
+  }
 
 Line
 ----
@@ -1106,9 +1182,19 @@ following template tag:
     {% load socialaccount %}
     <a href="{% provider_login_url "openid" openid="https://www.google.com/accounts/o8/id" next="/success/url/" %}">Google</a>
 
+The OpenID provider can be forced to operate in stateless mode as follows::
+
+    SOCIALACCOUNT_PROVIDERS = \
+        { 'openid':
+            { 'SERVERS':
+                [ dict(id='steam',
+                    name='Steam',
+                    openid_url='https://steamcommunity.com/openid',
+                    stateless=True,
+                )]}}
 
 OpenStreetMap
------
+-------------
 
 Register your client application under `My Settings`/`oauth settings`:
 
@@ -1147,7 +1233,7 @@ The following Patreon settings are available:
 .. code-block:: python
 
     SOCIALACCOUNT_PROVIDERS = {
-        'paypal': {
+        'patreon': {
             'VERSION': 'v1',
             'SCOPE': ['pledges-to-me', 'users', 'my-campaign'],
         }
@@ -1484,7 +1570,7 @@ Make sure to create a Steam SocialApp with that secret key.
 
 
 Strava
------
+------
 
 Register your OAuth2 app in api settings page:
 
@@ -1672,6 +1758,20 @@ The configuration values come from your API dashboard on Untappd:
 * Secret key: "Client Secret" from Untappd
 * Sites: choose your site
 
+In addition, you should override your user agent to comply with Untappd's API
+rules, and specify something in the format
+``<platform>:<app ID>:<version string>``. Otherwise,
+you will risk additional rate limiting in your application.
+
+.. code-block:: python
+
+    SOCIALACCOUNT_PROVIDERS = {
+        'untappd': {
+            'USER_AGENT': 'django:myappid:1.0',
+        }
+    }
+
+
 
 Telegram
 --------
@@ -1783,6 +1883,21 @@ Yahoo
 Register your OAuth2 app below and enter the resultant client id and secret into admin
     https://developer.yahoo.com/apps/create/
 
+
+Yandex
+------
+
+App registration (get key and secret here)
+    https://oauth.yandex.com/client/new
+
+Development callback URL
+    https://oauth.yandex.com/verification_code
+
+Yandex OAuth app has many different access rights for its services. For the basic access level,
+you just need to a choose "Yandex.Passport API" section and check "Access to email address" and
+"Access to username, first name and surname, gender". Everything else is optional.
+
+
 YNAB
 ------
 
@@ -1798,6 +1913,7 @@ Default SCOPE permissions are 'read-only'. If this is the desired functionality,
 in SOCIALACCOUNT_PROVIDERS. Otherwise, adding SCOPE and an empty string will give you read / write.
 
 .. code-block:: python
+
     SOCIALACCOUNT_PROVIDERS = {
         'ynab': {
             'SCOPE': ''

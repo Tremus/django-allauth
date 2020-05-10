@@ -25,8 +25,8 @@ from django.template import TemplateDoesNotExist
 from django.template.loader import render_to_string
 from django.urls import reverse
 from django.utils import timezone
-
-from allauth.compat import force_str, ugettext_lazy as _
+from django.utils.encoding import force_str
+from django.utils.translation import gettext_lazy as _
 
 from ..utils import (
     build_absolute_uri,
@@ -412,8 +412,13 @@ class DefaultAccountAdapter(object):
                        'first_name', 'last_name', 'email'])
 
     def is_safe_url(self, url):
-        from django.utils.http import is_safe_url
-        return is_safe_url(url, allowed_hosts=None)
+        try:
+            from django.utils.http import url_has_allowed_host_and_scheme
+        except ImportError:
+            from django.utils.http import \
+                is_safe_url as url_has_allowed_host_and_scheme
+
+        return url_has_allowed_host_and_scheme(url, allowed_hosts=None)
 
     def get_email_confirmation_url(self, request, emailconfirmation):
         """Constructs the email confirmation (activation) url.
